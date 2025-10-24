@@ -1,0 +1,227 @@
+
+import React, { useState, useEffect, useRef } from 'react';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
+import { NAV_LINKS } from '../constants';
+import type { NavItem } from '../types';
+
+const Dropdown: React.FC<{ item: NavItem; closeMobileMenu: () => void }> = ({ item, closeMobileMenu }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const node = useRef<HTMLLIElement>(null);
+
+    const handleClickOutside = (e: MouseEvent) => {
+        if (node.current?.contains(e.target as Node)) {
+            return;
+        }
+        setIsOpen(false);
+    };
+
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isOpen]);
+
+
+    return (
+        <li ref={node} className="relative">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className={`flex items-center gap-1 px-4 py-2 rounded-google transition-all duration-200 hover:bg-surface-container ${isOpen ? 'text-primary-green bg-surface-container' : 'hover:text-primary-text'}`}
+            >
+                {item.name}
+                <svg className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            {isOpen && (
+                <ul className="absolute z-20 mt-2 w-64 bg-surface rounded-google-lg shadow-card py-2 border border-outline">
+                    {item.dropdown?.map((subItem) => (
+                        <li key={subItem.name}>
+                            <Link 
+                                to={subItem.path} 
+                                className="block px-4 py-3 text-sm text-secondary-text hover:bg-surface-container hover:text-primary-text transition-all duration-200"
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    closeMobileMenu();
+                                }}
+                            >
+                                {subItem.name}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </li>
+    );
+};
+
+
+const Navbar: React.FC = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkLoginStatus = () => {
+            const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
+            setIsLoggedIn(loggedInStatus);
+        };
+        checkLoginStatus();
+        window.addEventListener('storage', checkLoginStatus); // Sync across tabs
+        return () => {
+            window.removeEventListener('storage', checkLoginStatus);
+        };
+    }, [location]);
+
+    const handleLogout = () => {
+        localStorage.removeItem('isLoggedIn');
+        setIsLoggedIn(false);
+        setIsMenuOpen(false);
+        navigate('/');
+    };
+
+
+    return (
+        <header className="sticky top-0 z-50 navbar-solid border-b border-outline">
+            <div className="container mx-auto px-6 lg:px-8">
+                <div className="flex items-center justify-between h-16">
+                    {/* Logo */}
+                    <div className="flex-shrink-0">
+                         <Link to="/" className="text-2xl font-semibold text-primary-text flex items-center gap-2 tracking-tight transition-all duration-300 hover:scale-[1.02]">
+                           <div className="w-8 h-8 bg-gradient-to-br from-primary-green to-secondary-green rounded-lg flex items-center justify-center">
+                             <span className="text-white font-bold text-sm">SD</span>
+                           </div>
+                           <span 
+                             className="text-gradient"
+                             style={{
+                               background: 'linear-gradient(135deg, #34a853 0%, #4caf50 100%)',
+                               WebkitBackgroundClip: 'text',
+                               WebkitTextFillColor: 'transparent',
+                               backgroundClip: 'text'
+                             }}
+                           >
+                             Startup Desa
+                           </span>
+                        </Link>
+                    </div>
+
+                    {/* Desktop Navigation */}
+                    <nav className="hidden md:flex md:items-center md:space-x-2">
+                        <ul className="flex items-center space-x-2 text-sm font-medium text-secondary-text">
+                           {NAV_LINKS.map((item) => (
+                                item.dropdown ? (
+                                    <Dropdown key={item.name} item={item} closeMobileMenu={() => {}} />
+                                ) : (
+                                    <li key={item.name}>
+                                        <NavLink 
+                                            to={item.path!} 
+                                            className={({ isActive }) => 
+                                                `px-4 py-2 rounded-google transition-all duration-200 hover:bg-surface-container ${isActive ? 'text-primary-green bg-surface-container' : 'hover:text-primary-text'}`
+                                            }
+                                        >
+                                            {item.name}
+                                        </NavLink>
+                                    </li>
+                                )
+                           ))}
+                        </ul>
+                    </nav>
+
+                     <div className="hidden md:flex items-center space-x-3">
+                        {isLoggedIn ? (
+                            <div className="flex items-center space-x-3">
+                                <Link to="/admin" className="px-4 py-2 text-sm font-medium text-secondary-text hover:text-primary-text hover:bg-surface-container rounded-google transition-all duration-200">
+                                    Dashboard
+                                </Link>
+                                <button onClick={handleLogout} className="px-4 py-2 text-sm font-medium text-white bg-accent-red hover:bg-red-600 rounded-google-2xl transition-all duration-200">
+                                    Logout
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="flex items-center space-x-3">
+                                <Link to="/login" className="px-4 py-2 text-sm font-medium text-secondary-text hover:text-primary-text hover:bg-surface-container rounded-google transition-all duration-200">
+                                    Login
+                                </Link>
+                                <Link to="/hubungi" className="btn-primary">
+                                    Daftar Sekarang
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Mobile Menu Button */}
+                    <div className="md:hidden flex items-center">
+                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-secondary-text hover:text-accent-green">
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                {isMenuOpen ? (
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                ) : (
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                                )}
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Mobile Menu */}
+            {isMenuOpen && (
+                 <div className="md:hidden bg-white border-t border-outline">
+                    <ul className="px-6 py-4 space-y-2 text-sm font-medium text-secondary-text">
+                        {NAV_LINKS.map((item) => (
+                            item.dropdown ? (
+                                <Dropdown key={item.name} item={item} closeMobileMenu={() => setIsMenuOpen(false)} />
+                            ) : (
+                                <li key={item.name}>
+                                    <NavLink 
+                                        to={item.path!} 
+                                        className={({ isActive }) => 
+                                            `block px-4 py-3 rounded-google transition-all duration-200 ${isActive ? 'text-primary-green bg-surface-container' : 'text-secondary-text hover:bg-surface-container hover:text-primary-text'}`
+                                        }
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        {item.name}
+                                    </NavLink>
+                                </li>
+                            )
+                        ))}
+                         {isLoggedIn && (
+                            <li>
+                                <NavLink 
+                                    to="/admin" 
+                                    className={({ isActive }) => `block px-4 py-3 rounded-google transition-all duration-200 ${isActive ? 'text-primary-green bg-surface-container' : 'text-secondary-text hover:bg-surface-container hover:text-primary-text'}`}
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    Dashboard
+                                </NavLink>
+                            </li>
+                        )}
+                    </ul>
+                     <div className="px-6 pb-6">
+                        {isLoggedIn ? (
+                            <button onClick={handleLogout} className="w-full text-center bg-accent-red text-white font-medium py-3 px-6 rounded-google-2xl hover:bg-red-600 transition-all duration-200">
+                                Logout
+                            </button>
+                        ) : (
+                            <div className="space-y-3">
+                                <Link to="/login" onClick={() => setIsMenuOpen(false)} className="w-full text-center btn-secondary block">
+                                    Login
+                                </Link>
+                                <Link to="/hubungi" onClick={() => setIsMenuOpen(false)} className="w-full text-center btn-primary block">
+                                    Daftar Sekarang
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+                 </div>
+            )}
+        </header>
+    );
+};
+
+export default Navbar;
