@@ -79,16 +79,16 @@ const Pengumuman: React.FC = () => {
     return (
         <div className="min-h-screen bg-surface">
             {/* Hero Section */}
-            <section className="bg-gradient-to-br from-primary-green via-secondary-green to-accent-green py-20 text-white">
+            <section className="bg-gradient-to-br from-primary-navy via-secondary-navy to-accent-navy py-20 text-white">
                 <div className="container mx-auto px-6 lg:px-8 text-center">
                     <div>
                         <h1 className="text-4xl sm:text-5xl font-bold mb-6">Pengumuman Penjurian</h1>
                         <p className="text-xl mb-8 text-white/90">Selamat kepada kelompok yang berhasil melaju ke tahap selanjutnya!</p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <a href="#daftar-lolos" className="bg-white text-primary-green font-semibold py-3 px-8 rounded-google-2xl hover:bg-surface-variant transition-all duration-200">
+                            <a href="#daftar-lolos" className="bg-white text-primary-navy font-semibold py-3 px-8 rounded-google-2xl hover:bg-surface-variant transition-all duration-200">
                                 Lihat Daftar Lolos
                             </a>
-                            <a href="https://wa.me/group" target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-semibold py-3 px-8 rounded-google-2xl hover:bg-white hover:text-primary-green transition-all duration-200">
+                            <a href="https://wa.me/group" target="_blank" rel="noopener noreferrer" className="border-2 border-white text-white font-semibold py-3 px-8 rounded-google-2xl hover:bg-white hover:text-primary-navy transition-all duration-200">
                                 Gabung Grup WA
                             </a>
                         </div>
@@ -101,7 +101,7 @@ const Pengumuman: React.FC = () => {
                 <div className="container mx-auto px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl sm:text-4xl font-bold text-primary-text mb-4">Daftar Tim Lolos Penjurian</h2>
-                        <div className="w-24 h-1 bg-gradient-to-r from-primary-green to-secondary-green mx-auto rounded-full"></div>
+                        <div className="w-24 h-1 bg-gradient-to-r from-primary-navy to-secondary-navy mx-auto rounded-full"></div>
                     </div>
                     
                     <div className="max-w-4xl mx-auto">
@@ -109,7 +109,7 @@ const Pengumuman: React.FC = () => {
                             {timLolos.map((tim, index) => (
                                 <div key={index} className="bg-surface-variant rounded-google-lg p-4 shadow-card card-hover border border-outline-variant">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 bg-gradient-to-br from-primary-green to-secondary-green rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                        <div className="w-8 h-8 bg-gradient-to-br from-primary-navy to-secondary-navy rounded-full flex items-center justify-center text-white font-bold text-sm">
                                             {index + 1}
                                         </div>
                                         <span className="font-medium text-primary-text">{tim}</span>
@@ -149,7 +149,7 @@ const Pengumuman: React.FC = () => {
                                     </p>
                                 </div>
                                 
-                                <div className="bg-gradient-to-br from-primary-green/5 to-secondary-green/5 rounded-google-lg p-6">
+                                <div className="bg-gradient-to-br from-primary-navy/5 to-secondary-navy/5 rounded-google-lg p-6">
                                     <h4 className="font-semibold text-lg text-primary-text mb-4">📋 Hal Penting</h4>
                                     <ul className="text-secondary-text space-y-2">
                                         <li>• Akomodasi disediakan panitia</li>
@@ -169,7 +169,7 @@ const Pengumuman: React.FC = () => {
                                 {pemateri.map((speaker, index) => (
                                     <div key={index} className="bg-surface-variant rounded-google-lg p-6 border border-outline-variant">
                                         <h4 className="font-semibold text-lg text-primary-text mb-2">{speaker.nama}</h4>
-                                        <p className="text-primary-green font-medium mb-2">{speaker.jabatan}</p>
+                                        <p className="text-primary-navy font-medium mb-2">{speaker.jabatan}</p>
                                         {speaker.materi && (
                                             <p className="text-secondary-text italic">Materi: {speaker.materi}</p>
                                         )}
@@ -204,16 +204,16 @@ const Pengumuman: React.FC = () => {
             </section>
 
             {/* CTA Section */}
-            <section className="py-20 bg-gradient-to-br from-primary-green via-secondary-green to-accent-green">
+            <section className="py-20 bg-gradient-to-br from-primary-navy via-secondary-navy to-accent-navy">
                 <div className="container mx-auto px-6 lg:px-8 text-center">
                     <div className="text-white">
                         <h3 className="text-3xl font-bold mb-6">Siap untuk Bootcamp?</h3>
                         <p className="text-xl mb-8 text-white/90">Bergabunglah dengan grup WhatsApp untuk informasi terbaru</p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <a href="https://wa.me/group" target="_blank" rel="noopener noreferrer" className="bg-white text-primary-green font-semibold py-4 px-8 rounded-google-2xl hover:bg-surface-variant transition-all duration-200">
+                            <a href="https://wa.me/group" target="_blank" rel="noopener noreferrer" className="bg-white text-primary-navy font-semibold py-4 px-8 rounded-google-2xl hover:bg-surface-variant transition-all duration-200">
                                 Gabung Grup WA
                             </a>
-                            <Link to="/hubungi" className="border-2 border-white text-white font-semibold py-4 px-8 rounded-google-2xl hover:bg-white hover:text-primary-green transition-all duration-200">
+                            <Link to="/hubungi" className="border-2 border-white text-white font-semibold py-4 px-8 rounded-google-2xl hover:bg-white hover:text-primary-navy transition-all duration-200">
                                 Hubungi Panitia
                             </Link>
                         </div>

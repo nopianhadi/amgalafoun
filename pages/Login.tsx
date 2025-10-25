@@ -52,7 +52,7 @@ const Login: React.FC = () => {
                                 type="email"
                                 autoComplete="email"
                                 required
-                                className="w-full px-4 py-3 rounded-t-lg border border-border-gray focus:outline-none focus:ring-2 focus:ring-accent-green/50 focus:border-accent-green transition-shadow bg-white/70"
+                                className="w-full px-4 py-3 rounded-t-lg border border-border-gray focus:outline-none focus:ring-2 focus:ring-primary-navy/50 focus:border-primary-navy transition-shadow bg-white/70"
                                 placeholder="Email address"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -66,7 +66,7 @@ const Login: React.FC = () => {
                                 type="password"
                                 autoComplete="current-password"
                                 required
-                                className="w-full px-4 py-3 rounded-b-lg border border-border-gray focus:outline-none focus:ring-2 focus:ring-accent-green/50 focus:border-accent-green transition-shadow bg-white/70"
+                                className="w-full px-4 py-3 rounded-b-lg border border-border-gray focus:outline-none focus:ring-2 focus:ring-primary-navy/50 focus:border-primary-navy transition-shadow bg-white/70"
                                 placeholder="Password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -76,7 +76,7 @@ const Login: React.FC = () => {
                     <div>
                         <button
                             type="submit"
-                            className="w-full bg-accent-green text-white font-semibold py-3 px-6 rounded-lg hover:opacity-90 transition-opacity duration-300"
+                            className="w-full bg-primary-navy text-white font-semibold py-3 px-6 rounded-lg hover:opacity-90 transition-opacity duration-300"
                         >
                             Sign in
                         </button>

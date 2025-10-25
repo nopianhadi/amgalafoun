@@ -1,63 +1,7 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { NAV_LINKS } from '../constants';
-import type { NavItem } from '../types';
-
-const Dropdown: React.FC<{ item: NavItem; closeMobileMenu: () => void }> = ({ item, closeMobileMenu }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const node = useRef<HTMLLIElement>(null);
-
-    const handleClickOutside = (e: MouseEvent) => {
-        if (node.current?.contains(e.target as Node)) {
-            return;
-        }
-        setIsOpen(false);
-    };
-
-    useEffect(() => {
-        if (isOpen) {
-            document.addEventListener("mousedown", handleClickOutside);
-        } else {
-            document.removeEventListener("mousedown", handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [isOpen]);
-
-
-    return (
-        <li ref={node} className="relative">
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                className={`flex items-center gap-1 px-4 py-2 rounded-google transition-all duration-200 hover:bg-surface-container ${isOpen ? 'text-primary-green bg-surface-container' : 'hover:text-primary-text'}`}
-            >
-                {item.name}
-                <svg className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-            </button>
-            {isOpen && (
-                <ul className="absolute z-20 mt-2 w-64 bg-surface rounded-google-lg shadow-card py-2 border border-outline">
-                    {item.dropdown?.map((subItem) => (
-                        <li key={subItem.name}>
-                            <Link 
-                                to={subItem.path} 
-                                className="block px-4 py-3 text-sm text-secondary-text hover:bg-surface-container hover:text-primary-text transition-all duration-200"
-                                onClick={() => {
-                                    setIsOpen(false);
-                                    closeMobileMenu();
-                                }}
-                            >
-                                {subItem.name}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </li>
-    );
-};
 
 
 const Navbar: React.FC = () => {
@@ -93,19 +37,19 @@ const Navbar: React.FC = () => {
                     {/* Logo */}
                     <div className="flex-shrink-0">
                          <Link to="/" className="text-2xl font-semibold text-primary-text flex items-center gap-2 tracking-tight transition-all duration-300 hover:scale-[1.02]">
-                           <div className="w-8 h-8 bg-gradient-to-br from-primary-green to-secondary-green rounded-lg flex items-center justify-center">
-                             <span className="text-white font-bold text-sm">SD</span>
+                           <div className="w-8 h-8 bg-gradient-to-br from-primary-navy to-secondary-navy rounded-lg flex items-center justify-center">
+                             <span className="text-white font-bold text-sm">AF</span>
                            </div>
                            <span 
                              className="text-gradient"
                              style={{
-                               background: 'linear-gradient(135deg, #34a853 0%, #4caf50 100%)',
+                               background: 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
                                WebkitBackgroundClip: 'text',
                                WebkitTextFillColor: 'transparent',
                                backgroundClip: 'text'
                              }}
                            >
-                             Startup Desa
+                             Amgala Foundation
                            </span>
                         </Link>
                     </div>
@@ -114,20 +58,16 @@ const Navbar: React.FC = () => {
                     <nav className="hidden md:flex md:items-center md:space-x-2">
                         <ul className="flex items-center space-x-2 text-sm font-medium text-secondary-text">
                            {NAV_LINKS.map((item) => (
-                                item.dropdown ? (
-                                    <Dropdown key={item.name} item={item} closeMobileMenu={() => {}} />
-                                ) : (
-                                    <li key={item.name}>
-                                        <NavLink 
-                                            to={item.path!} 
-                                            className={({ isActive }) => 
-                                                `px-4 py-2 rounded-google transition-all duration-200 hover:bg-surface-container ${isActive ? 'text-primary-green bg-surface-container' : 'hover:text-primary-text'}`
-                                            }
-                                        >
-                                            {item.name}
-                                        </NavLink>
-                                    </li>
-                                )
+                                <li key={item.name}>
+                                    <NavLink 
+                                        to={item.path} 
+                                        className={({ isActive }) => 
+                                            `px-4 py-2 rounded-google transition-all duration-200 hover:bg-surface-container ${isActive ? 'text-primary-navy bg-surface-container' : 'hover:text-primary-text'}`
+                                        }
+                                    >
+                                        {item.name}
+                                    </NavLink>
+                                </li>
                            ))}
                         </ul>
                     </nav>
@@ -148,7 +88,7 @@ const Navbar: React.FC = () => {
                                     Login
                                 </Link>
                                 <Link to="/hubungi" className="btn-primary">
-                                    Daftar Sekarang
+                                    Contact Us
                                 </Link>
                             </div>
                         )}
@@ -156,7 +96,7 @@ const Navbar: React.FC = () => {
 
                     {/* Mobile Menu Button */}
                     <div className="md:hidden flex items-center">
-                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-secondary-text hover:text-accent-green">
+                        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-secondary-text hover:text-primary-navy">
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 {isMenuOpen ? (
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -174,27 +114,23 @@ const Navbar: React.FC = () => {
                  <div className="md:hidden bg-white border-t border-outline">
                     <ul className="px-6 py-4 space-y-2 text-sm font-medium text-secondary-text">
                         {NAV_LINKS.map((item) => (
-                            item.dropdown ? (
-                                <Dropdown key={item.name} item={item} closeMobileMenu={() => setIsMenuOpen(false)} />
-                            ) : (
-                                <li key={item.name}>
-                                    <NavLink 
-                                        to={item.path!} 
-                                        className={({ isActive }) => 
-                                            `block px-4 py-3 rounded-google transition-all duration-200 ${isActive ? 'text-primary-green bg-surface-container' : 'text-secondary-text hover:bg-surface-container hover:text-primary-text'}`
-                                        }
-                                        onClick={() => setIsMenuOpen(false)}
-                                    >
-                                        {item.name}
-                                    </NavLink>
-                                </li>
-                            )
+                            <li key={item.name}>
+                                <NavLink 
+                                    to={item.path} 
+                                    className={({ isActive }) => 
+                                        `block px-4 py-3 rounded-google transition-all duration-200 ${isActive ? 'text-primary-navy bg-surface-container' : 'text-secondary-text hover:bg-surface-container hover:text-primary-text'}`
+                                    }
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    {item.name}
+                                </NavLink>
+                            </li>
                         ))}
                          {isLoggedIn && (
                             <li>
                                 <NavLink 
                                     to="/admin" 
-                                    className={({ isActive }) => `block px-4 py-3 rounded-google transition-all duration-200 ${isActive ? 'text-primary-green bg-surface-container' : 'text-secondary-text hover:bg-surface-container hover:text-primary-text'}`}
+                                    className={({ isActive }) => `block px-4 py-3 rounded-google transition-all duration-200 ${isActive ? 'text-primary-navy bg-surface-container' : 'text-secondary-text hover:bg-surface-container hover:text-primary-text'}`}
                                     onClick={() => setIsMenuOpen(false)}
                                 >
                                     Dashboard
@@ -213,7 +149,7 @@ const Navbar: React.FC = () => {
                                     Login
                                 </Link>
                                 <Link to="/hubungi" onClick={() => setIsMenuOpen(false)} className="w-full text-center btn-primary block">
-                                    Daftar Sekarang
+                                    Contact Us
                                 </Link>
                             </div>
                         )}
